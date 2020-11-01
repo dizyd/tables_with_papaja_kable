@@ -1,17 +1,4 @@
----
-title: 'Short Tutorial: Creating Publication Ready Tables With `papaja` and `kable()`'
-author: "David Izydorczyk"
-date: "2020-11-01"
-output:
-  html_document:
-    fig_caption: yes
-    code_folding: show
-    keep_md: TRUE
-    theme: paper
-editor_options: 
-  chunk_output_type: console
-
----
+# Short Tutorial: Creating Publication Ready Tables With `papaja` and `kable()`
 
 
 
@@ -112,16 +99,6 @@ kable(temp1 ,format = "latex",booktabs=TRUE)
 ```
 
 
-\begin{tabular}{rllll}
-\toprule
-gear & mean & sd & corr & p\\
-\midrule
-3 & 16.11 & 3.37 & -.74 & .002\\
-4 & 24.53 & 5.28 & -.88 & < .001\\
-5 & 21.38 & 6.66 & -.90 & .037\\
-\bottomrule
-\end{tabular}
-
 <img src="images/table2.PNG" width="35%" style="display: block; margin: auto;" />
 
 This table looks already a little bit nicer than the previous one. Often we report composites of multiple descriptive statistics in one column, for instance the mean and then the standard deviation in parenthesis. We can easily implement this in R by using the `paste0()` 
@@ -145,16 +122,6 @@ kable(temp2 ,format = "latex",booktabs=TRUE)
 ```
 
 
-\begin{tabular}{rlll}
-\toprule
-gear & mean\_sd & corr & p\\
-\midrule
-3 & 16.11 (3.37) & -.74 & .002\\
-4 & 24.53 (5.28) & -.88 & < .001\\
-5 & 21.38 (6.66) & -.90 & .037\\
-\bottomrule
-\end{tabular}
-
 <img src="images/table3.PNG" width="35%" style="display: block; margin: auto;" />
 
 ## Changing the variable namens in the table
@@ -170,16 +137,6 @@ temp2 %>%
           escape    = FALSE)
 ```
 
-
-\begin{tabular}{cccc}
-\toprule
-Gears & Miles per Gallon & $r$ & $p$\\
-\midrule
-3 & 16.11 (3.37) & -.74 & .002\\
-4 & 24.53 (5.28) & -.88 & < .001\\
-5 & 21.38 (6.66) & -.90 & .037\\
-\bottomrule
-\end{tabular}
 
 <img src="images/table4.PNG" width="35%" style="display: block; margin: auto;" />
 
@@ -203,26 +160,6 @@ temp2 %>%
            title_format      = c("italic"))
 ```
 
-\begin{table}
-
-\caption{\label{tab:unnamed-chunk-13}This is caption}
-\centering
-\begin{threeparttable}
-\begin{tabular}[t]{cccc}
-\toprule
-Gears & Miles per Gallon & $r$ & $p$\\
-\midrule
-3 & 16.11 (3.37) & -.74 & .002\\
-4 & 24.53 (5.28) & -.88 & < .001\\
-5 & 21.38 (6.66) & -.90 & .037\\
-\bottomrule
-\end{tabular}
-\begin{tablenotes}[para]
-\item \textit{Note.} 
-\item This is a note
-\end{tablenotes}
-\end{threeparttable}
-\end{table}
 
 <img src="images/table5.PNG" width="65%" style="display: block; margin: auto;" />
 
@@ -248,28 +185,7 @@ temp2 %>%
   add_header_above(c("Estimates" = 2))
 ```
 
-\begin{table}
 
-\caption{\label{tab:unnamed-chunk-15}This is caption}
-\centering
-\begin{threeparttable}
-\begin{tabular}[t]{cccc}
-\toprule
-\multicolumn{2}{c}{Estimates} \\
-\cmidrule(l{3pt}r{3pt}){1-2}
-Gears & Miles per Gallon & $r$ & $p$\\
-\midrule
-3 & 16.11 (3.37) & -.74 & .002\\
-4 & 24.53 (5.28) & -.88 & < .001\\
-5 & 21.38 (6.66) & -.90 & .037\\
-\bottomrule
-\end{tabular}
-\begin{tablenotes}[para]
-\item \textit{Note.} 
-\item This is a note
-\end{tablenotes}
-\end{threeparttable}
-\end{table}
 
 <img src="images/table6.PNG" width="65%" style="display: block; margin: auto;" />
 
@@ -294,28 +210,6 @@ temp2 %>%
   add_header_above(c("Estimates" = 2))
 ```
 
-\begin{table}
-
-\caption{\label{tab:unnamed-chunk-17}This is caption}
-\centering
-\begin{threeparttable}
-\begin{tabular}[t]{cccc}
-\toprule
-\multicolumn{2}{c}{Estimates} \\
-\cmidrule(l{3pt}r{3pt}){1-2}
-Gears & Miles per Gallon & $r_{hp \times mpg}$ & $p$\\
-\midrule
-3 & 16.11 (3.37) & -.74 & .002\\
-4 & 24.53 (5.28) & -.88 & < .001\\
-5 & 21.38 (6.66) & -.90 & .037\\
-\bottomrule
-\end{tabular}
-\begin{tablenotes}[para]
-\item \textit{Note.} 
-\item $E = m \times c^{2}$. $x_1$ and $x_2$
-\end{tablenotes}
-\end{threeparttable}
-\end{table}
 
 <img src="images/table7.PNG" width="65%" style="display: block; margin: auto;" />
 
@@ -348,27 +242,5 @@ temp2 %>%
   add_header_above(c("Estimates" = 2))
 ```
 
-\begin{table}
-
-\caption{\label{tab:unnamed-chunk-20}This is caption}
-\centering
-\begin{threeparttable}
-\begin{tabular}[t]{cccS[table-format=< .3]cccS[table-format=< .3]cccS[table-format=< .3]cccS[table-format=< .3]}
-\toprule
-\multicolumn{2}{c}{Estimates} \\
-\cmidrule(l{3pt}r{3pt}){1-2}
-Gears & Miles per Gallon & $r_{hp \times mpg}$ & $p$\\
-\midrule
-3 & 16.11 (3.37) & -.74 & .002\\
-4 & 24.53 (5.28) & -.88 & < .001\\
-5 & 21.38 (6.66) & -.90 & .037\\
-\bottomrule
-\end{tabular}
-\begin{tablenotes}[para]
-\item \textit{Note.} 
-\item $E = m \times c^{2}$. $x_1$ and $x_2$
-\end{tablenotes}
-\end{threeparttable}
-\end{table}
 
 <img src="images/table8.PNG" width="65%" style="display: block; margin: auto;" />
