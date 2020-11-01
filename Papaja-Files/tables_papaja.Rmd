@@ -1,0 +1,204 @@
+---
+title             : "Short Tutorial: Creating Publication Ready Tables With papaja and kable()"
+shorttitle        : "Short Tutorial"
+
+author: 
+  - name          : "David Izydorczyk"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "my@email.com"
+
+affiliation:
+  - id            : "1"
+    institution   : ""
+
+
+authornote: 
+
+abstract: 
+  
+keywords          : "keywords"
+wordcount         : "X"
+
+bibliography      : ["r-references.bib"]
+
+floatsintext      : yes
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : no
+mask              : no
+draft             : no
+
+documentclass     : "apa6"
+classoption       : "man"
+header-includes   :
+   - \usepackage{siunitx}
+   - \sisetup{add-integer-zero=false}
+output            : papaja::apa6_pdf
+
+
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("r-references.bib")
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+
+
+```{r message=FALSE}
+library(papaja)
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+```
+
+
+```{r}
+temp0 <- mtcars %>% 
+            group_by(gear) %>% 
+            summarize(mean = mean(mpg),
+                      sd   = sd(mpg),
+                      corr = cor.test(mpg,hp)$estimate,
+                      p    = cor.test(mpg,hp)$p.value,
+                      .groups="keep") %>%
+            as.data.frame() #for nicer printing
+```
+
+
+
+# Generate LaTeX-Table
+
+
+
+```{r echo=FALSE}
+kable(temp0,format = "latex",booktabs=TRUE)
+```
+
+
+# Formatting the values inside the table
+
+
+```{r}
+temp1 <-  temp0 %>% 
+              mutate(mean = printnum(mean),
+                     sd   = printnum(sd), 
+                     corr = printnum(corr,gt1=FALSE),
+                     p    = printp(p))  %>%
+              as.data.frame()
+```
+
+
+```{r}
+kable(temp1 ,format = "latex",booktabs=TRUE)
+```
+
+
+```{r}
+temp2 <-  temp1 %>% 
+              mutate(mean_sd = paste0(mean," (",sd,")"))  %>%
+              select(gear,mean_sd,corr,p) 
+
+kable(temp2 ,format = "latex",booktabs=TRUE)
+```
+
+\newpage
+
+# Changing the variable namens in the table
+
+
+```{r}
+temp2 %>%
+  kable(.,format    = "latex",booktabs=TRUE,
+          align     = "c",
+          col.names = c("Gears","Miles per Gallon","$r$","$p$"),
+          escape    = FALSE)
+```
+
+\newpage
+
+# Adding table notes and captions
+
+
+```{r}
+temp2 %>%
+  kable(.,format    = "latex",booktabs=TRUE,
+          align     = "c",
+          col.names = c("Gears","Miles per Gallon","$r$","$p$"),
+          escape    = FALSE,
+          caption   = "This is a caption")  %>%
+  footnote(general  = "This is a note",
+           footnote_as_chunk = TRUE,
+           threeparttable    = T,
+           escape            = F,
+           general_title     = "Note.",
+           title_format      = c("italic"))
+```
+
+\newpage
+
+# Adding interim-headers
+
+
+
+```{r}
+temp2 %>%
+  kable(.,format    = "latex",booktabs=TRUE,
+          align     = "c",
+          col.names = c("Gears","Miles per Gallon","$r$","$p$"),
+          escape    = FALSE,
+          caption   = "This is caption")  %>%
+  footnote(general  = "This is a note",
+           footnote_as_chunk = TRUE,
+           threeparttable    = T,
+           escape            = F,
+           general_title     = "Note.",
+           title_format      = c("italic")) %>%
+  add_header_above(c(" " = 1, "Estimates" = 2))
+```
+
+\newpage
+
+# Using additional LaTeX
+
+
+```{r}
+temp2 %>%
+  kable(.,format    = "latex",booktabs=TRUE,
+          align     = "c",
+          col.names = c("Gears","Miles per Gallon","$r_{hp \\times mpg}$","$p$"),
+          escape    = FALSE,
+          caption   = "This is caption")  %>%
+  footnote(general  = "$E = m \\\\times c^{2}$. $x_1$ and $x_2$",
+           footnote_as_chunk = TRUE,
+           threeparttable    = T,
+           escape            = F,
+           general_title     = "Note.",
+           title_format      = c("italic")) %>%
+  add_header_above(c("Estimates" = 2))
+```
+
+```{r}
+temp2 %>%
+  kable(.,format    = "latex",booktabs=TRUE,
+          align     = "cccS[table-format=< .3]",
+          col.names = c("Gears","Miles per Gallon","$r_{hp \\times mpg}$","$p$"),
+          escape    = FALSE,
+          caption   = "This is caption")  %>%
+  footnote(general  = "$E = m \\\\times c^{2}$. $x_1$ and $x_2$",
+           footnote_as_chunk = TRUE,
+           threeparttable    = T,
+           escape            = F,
+           general_title     = "Note.",
+           title_format      = c("italic")) %>%
+  add_header_above(c("Estimates" = 2))
+```
+

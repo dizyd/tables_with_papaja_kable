@@ -1,0 +1,300 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  english,
+  man,floatsintext]{apa6}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Short Tutorial: Creating Publication Ready Tables With papaja and kable()},
+  pdfauthor={David Izydorczyk1},
+  pdflang={en-EN},
+  pdfkeywords={keywords},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+% Manuscript styling
+\usepackage{upgreek}
+\captionsetup{font=singlespacing,justification=justified}
+
+% Table formatting
+\usepackage{longtable}
+\usepackage{lscape}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\begin{center}\begin{threeparttable}}
+%   {\end{threeparttable}\end{center}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\begin{center}\begin{ThreePartTable}}{\end{ThreePartTable}\end{center}\end{landscape}}
+
+% Enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
+\makeatletter
+\newcommand\LastLTentrywidth{1em}
+\newlength\longtablewidth
+\setlength{\longtablewidth}{1in}
+\newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
+
+% \setlength{\parindent}{0.5in}
+% \setlength{\parskip}{0pt plus 0pt minus 0pt}
+
+% \usepackage{etoolbox}
+\makeatletter
+\patchcmd{\HyOrg@maketitle}
+  {\section{\normalfont\normalsize\abstractname}}
+  {\section*{\normalfont\normalsize\abstractname}}
+  {}{\typeout{Failed to patch abstract.}}
+\patchcmd{\HyOrg@maketitle}
+  {\section{\protect\normalfont{\@title}}}
+  {\section*{\protect\normalfont{\@title}}}
+  {}{\typeout{Failed to patch title.}}
+\makeatother
+\shorttitle{Short Tutorial}
+\keywords{keywords\newline\indent Word count: X}
+\usepackage{csquotes}
+\usepackage{siunitx}
+\sisetup{add-integer-zero=false}
+\ifxetex
+  % Load polyglossia as late as possible: uses bidi with RTL langages (e.g. Hebrew, Arabic)
+  \usepackage{polyglossia}
+  \setmainlanguage[]{english}
+\else
+  \usepackage[shorthands=off,main=english]{babel}
+\fi
+
+\title{Short Tutorial: Creating Publication Ready Tables With papaja and kable()}
+\author{David Izydorczyk\textsuperscript{1}}
+\date{}
+
+
+\authornote{
+
+Correspondence concerning this article should be addressed to David Izydorczyk, Postal address. E-mail: \href{mailto:my@email.com}{\nolinkurl{my@email.com}}
+
+}
+
+\affiliation{\vspace{0.5cm}\textsuperscript{1} }
+
+\begin{document}
+\maketitle
+
+\hypertarget{generate-latex-table}{%
+\section{Generate LaTeX-Table}\label{generate-latex-table}}
+
+\begin{tabular}{rrrrr}
+\toprule
+gear & mean & sd & corr & p\\
+\midrule
+3 & 16.10667 & 3.371618 & -0.7389022 & 0.0016495\\
+4 & 24.53333 & 5.276764 & -0.8792697 & 0.0001644\\
+5 & 21.38000 & 6.658979 & -0.8998444 & 0.0374725\\
+\bottomrule
+\end{tabular}
+
+\hypertarget{formatting-the-values-inside-the-table}{%
+\section{Formatting the values inside the table}\label{formatting-the-values-inside-the-table}}
+
+\begin{tabular}{rllll}
+\toprule
+gear & mean & sd & corr & p\\
+\midrule
+3 & 16.11 & 3.37 & -.74 & .002\\
+4 & 24.53 & 5.28 & -.88 & < .001\\
+5 & 21.38 & 6.66 & -.90 & .037\\
+\bottomrule
+\end{tabular}
+
+\begin{tabular}{rlll}
+\toprule
+gear & mean\_sd & corr & p\\
+\midrule
+3 & 16.11 (3.37) & -.74 & .002\\
+4 & 24.53 (5.28) & -.88 & < .001\\
+5 & 21.38 (6.66) & -.90 & .037\\
+\bottomrule
+\end{tabular}
+
+\newpage
+
+\hypertarget{changing-the-variable-namens-in-the-table}{%
+\section{Changing the variable namens in the table}\label{changing-the-variable-namens-in-the-table}}
+
+\begin{tabular}{cccc}
+\toprule
+Gears & Miles per Gallon & $r$ & $p$\\
+\midrule
+3 & 16.11 (3.37) & -.74 & .002\\
+4 & 24.53 (5.28) & -.88 & < .001\\
+5 & 21.38 (6.66) & -.90 & .037\\
+\bottomrule
+\end{tabular}
+
+\newpage
+
+\hypertarget{adding-table-notes-and-captions}{%
+\section{Adding table notes and captions}\label{adding-table-notes-and-captions}}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-8}This is a caption}
+\centering
+\begin{threeparttable}
+\begin{tabular}[t]{cccc}
+\toprule
+Gears & Miles per Gallon & $r$ & $p$\\
+\midrule
+3 & 16.11 (3.37) & -.74 & .002\\
+4 & 24.53 (5.28) & -.88 & < .001\\
+5 & 21.38 (6.66) & -.90 & .037\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note.} 
+\item This is a note
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\newpage
+
+\hypertarget{adding-interim-headers}{%
+\section{Adding interim-headers}\label{adding-interim-headers}}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-9}This is caption}
+\centering
+\begin{threeparttable}
+\begin{tabular}[t]{cccc}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Estimates} \\
+\cmidrule(l{3pt}r{3pt}){2-3}
+Gears & Miles per Gallon & $r$ & $p$\\
+\midrule
+3 & 16.11 (3.37) & -.74 & .002\\
+4 & 24.53 (5.28) & -.88 & < .001\\
+5 & 21.38 (6.66) & -.90 & .037\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note.} 
+\item This is a note
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\newpage
+
+\hypertarget{using-additional-latex}{%
+\section{Using additional LaTeX}\label{using-additional-latex}}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-10}This is caption}
+\centering
+\begin{threeparttable}
+\begin{tabular}[t]{cccc}
+\toprule
+\multicolumn{2}{c}{Estimates} \\
+\cmidrule(l{3pt}r{3pt}){1-2}
+Gears & Miles per Gallon & $r_{hp \times mpg}$ & $p$\\
+\midrule
+3 & 16.11 (3.37) & -.74 & .002\\
+4 & 24.53 (5.28) & -.88 & < .001\\
+5 & 21.38 (6.66) & -.90 & .037\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note.} 
+\item $E = m \times c^{2}$. $x_1$ and $x_2$
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-11}This is caption}
+\centering
+\begin{threeparttable}
+\begin{tabular}[t]{cccS[table-format=< .3]cccS[table-format=< .3]cccS[table-format=< .3]cccS[table-format=< .3]}
+\toprule
+\multicolumn{2}{c}{Estimates} \\
+\cmidrule(l{3pt}r{3pt}){1-2}
+Gears & Miles per Gallon & $r_{hp \times mpg}$ & $p$\\
+\midrule
+3 & 16.11 (3.37) & -.74 & .002\\
+4 & 24.53 (5.28) & -.88 & < .001\\
+5 & 21.38 (6.66) & -.90 & .037\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note.} 
+\item $E = m \times c^{2}$. $x_1$ and $x_2$
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+\end{document}
