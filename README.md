@@ -6,8 +6,8 @@ output:
   html_document:
     fig_caption: yes
     code_folding: show
-    df_print: paged
     keep_md: TRUE
+    theme: paper
 editor_options: 
   chunk_output_type: console
 
@@ -45,11 +45,12 @@ Lets also create an example results data.frame based on the `mtcars` data set, w
             as.data.frame()) #for nicer printing
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["gear"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["corr"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"3","2":"16.10667","3":"3.371618","4":"-0.7389022","5":"0.0016495333"},{"1":"4","2":"24.53333","3":"5.276764","4":"-0.8792697","5":"0.0001643918"},{"1":"5","2":"21.38000","3":"6.658979","4":"-0.8998444","5":"0.0374724809"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+##   gear     mean       sd       corr            p
+## 1    3 16.10667 3.371618 -0.7389022 0.0016495333
+## 2    4 24.53333 5.276764 -0.8792697 0.0001643918
+## 3    5 21.38000 6.658979 -0.8998444 0.0374724809
+```
 
 This data.frame `temp0` now contains the mean and standard deviation of miles per gallon, the correlation of miles per gallon and horsepower, as well as the corresponding *p*-value, for each factor level of number of gears. 
 
@@ -96,11 +97,12 @@ As a first step to improve this table, we can format the output of the values in
               as.data.frame())
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["gear"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[2],"type":["chr"],"align":["left"]},{"label":["sd"],"name":[3],"type":["chr"],"align":["left"]},{"label":["corr"],"name":[4],"type":["chr"],"align":["left"]},{"label":["p"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"3","2":"16.11","3":"3.37","4":"-.74","5":".002"},{"1":"4","2":"24.53","3":"5.28","4":"-.88","5":"< .001"},{"1":"5","2":"21.38","3":"6.66","4":"-.90","5":".037"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+##   gear  mean   sd corr      p
+## 1    3 16.11 3.37 -.74   .002
+## 2    4 24.53 5.28 -.88 < .001
+## 3    5 21.38 6.66 -.90   .037
+```
 
 When we now use this new data.frame in kable, we get the following table [I will omit the underlying LaTeX-Code from now on, but running the code in RStudio or the Console will still print the code]: 
 
@@ -131,11 +133,12 @@ This table looks already a little bit nicer than the previous one. Often we repo
               select(gear,mean_sd,corr,p) )
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["gear"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mean_sd"],"name":[2],"type":["chr"],"align":["left"]},{"label":["corr"],"name":[3],"type":["chr"],"align":["left"]},{"label":["p"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"3","2":"16.11 (3.37)","3":"-.74","4":".002"},{"1":"4","2":"24.53 (5.28)","3":"-.88","4":"< .001"},{"1":"5","2":"21.38 (6.66)","3":"-.90","4":".037"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+##   gear      mean_sd corr      p
+## 1    3 16.11 (3.37) -.74   .002
+## 2    4 24.53 (5.28) -.88 < .001
+## 3    5 21.38 (6.66) -.90   .037
+```
 
 ```r
 kable(temp2 ,format = "latex",booktabs=TRUE)
